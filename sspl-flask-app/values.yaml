@@ -34,21 +34,7 @@ persistence:
   size: 1Gi
   mountPath: /app/logs
 
-livenessProbe:
-  httpGet:
-    path: /
-    port: 5000
-  initialDelaySeconds: 10
-  periodSeconds: 10
-
-readinessProbe:
-  httpGet:
-    path: /
-    port: 5000
-  initialDelaySeconds: 5
-  periodSeconds: 10
-
-  autoscaling:
+autoscaling:
   enabled: false
   minReplicas: 1
   maxReplicas: 5
