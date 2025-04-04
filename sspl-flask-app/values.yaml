@@ -47,3 +47,10 @@ readinessProbe:
     port: 5000
   initialDelaySeconds: 5
   periodSeconds: 10
+
+  autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 5
+  targetCPUUtilizationPercentage: 80
+  
