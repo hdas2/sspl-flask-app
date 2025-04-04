@@ -2,7 +2,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: {{ .Release.Name }}-pvc
+  name: {{ include "sspl-flask-app.fullname" . }}-logs
 spec:
   accessModes:
     - {{ .Values.persistence.accessMode }}

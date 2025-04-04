@@ -1,47 +1,49 @@
-replicaCount: 3
+replicaCount: 2
 
 image:
   repository: hariprotonmail/sspl_py_tools_web
   pullPolicy: IfNotPresent
-  tag: latest
+  tag: "latest"
 
 service:
   type: ClusterIP
-  port: 80
-  targetPort: 5000
+  port: 5000
+
+serviceAccount:
+  create: true
+  name: ""
+  automount: true
+  annotations: {}
 
 ingress:
   enabled: true
-  className: nginx
+  className: "nginx"
+  annotations: {}
   hosts:
     - host: sspl.local
       paths:
         - path: /
           pathType: Prefix
+  tls: []
 
-resources:
-  limits:
-    cpu: 500m
-    memory: 512Mi
-  requests:
-    cpu: 100m
-    memory: 128Mi
+resources: {}
 
 persistence:
   enabled: true
   accessMode: ReadWriteOnce
   size: 1Gi
+  mountPath: /app/logs
 
 livenessProbe:
   httpGet:
-    path: /healthz
+    path: /
     port: 5000
-  initialDelaySeconds: 15
-  periodSeconds: 20
+  initialDelaySeconds: 10
+  periodSeconds: 10
 
 readinessProbe:
   httpGet:
-    path: /healthz
+    path: /
     port: 5000
   initialDelaySeconds: 5
   periodSeconds: 10

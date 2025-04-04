@@ -1,6 +1,6 @@
 apiVersion: v2
 name: sspl-flask-app
-description: A Helm chart for deploying the SSPL Flask app
+description: A Flask web app Helm chart
 type: application
 version: 0.1.0
 appVersion: "1.0"

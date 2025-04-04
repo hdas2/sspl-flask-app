@@ -1,33 +1,30 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ .Release.Name }}
-  labels:
-    app: {{ .Chart.Name }}
+  name: {{ include "sspl-flask-app.fullname" . }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: {{ .Chart.Name }}
+      app: {{ include "sspl-flask-app.name" . }}
   template:
     metadata:
       labels:
-        app: {{ .Chart.Name }}
+        app: {{ include "sspl-flask-app.name" . }}
     spec:
+      serviceAccountName: {{ include "sspl-flask-app.serviceAccountName" . }}
       containers:
-        - name: {{ .Chart.Name }}
+        - name: flask-app
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
-            - containerPort: {{ .Values.service.targetPort }}
-          readinessProbe: {{ toYaml .Values.readinessProbe | nindent 12 }}
-          livenessProbe: {{ toYaml .Values.livenessProbe | nindent 12 }}
+            - containerPort: 5000
           volumeMounts:
             - name: log-volume
-              mountPath: /app/logs
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+              mountPath: {{ .Values.persistence.mountPath }}
+          livenessProbe: {{ toYaml .Values.livenessProbe | nindent 12 }}
+          readinessProbe: {{ toYaml .Values.readinessProbe | nindent 12 }}
       volumes:
         - name: log-volume
           persistentVolumeClaim:
-            claimName: {{ .Release.Name }}-pvc
+            claimName: {{ include "sspl-flask-app.fullname" . }}-logs
