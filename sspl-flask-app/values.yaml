@@ -6,8 +6,10 @@ image:
   tag: "latest"
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 5000
+  targetPort: 5000
+  nodePort: 30500
 
 serviceAccount:
   create: true
