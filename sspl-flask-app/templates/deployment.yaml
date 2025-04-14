@@ -27,4 +27,5 @@ spec:
       volumes:
         - name: log-volume
           persistentVolumeClaim:
+          emptyDir: {}
             claimName: {{ include "sspl-flask-app.fullname" . }}-logs
